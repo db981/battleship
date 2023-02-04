@@ -8,6 +8,7 @@ const Ship = (length) => {
 };
 
 const Gameboard = () => {
+  let ships = 0;
   const board = [];
   for (let x = 0; x < 10; x++) {
     board[x] = [];
@@ -23,28 +24,48 @@ const Gameboard = () => {
         board[x][y].ship = ship;
       }
     }
+    ships += 1;
   };
   const receiveAttack = (x, y) => {
     if (board[x][y].attacked === false) {
       board[x][y].attacked = true;
       if (board[x][y].ship) {
         board[x][y].ship.hit();
-        // reporthit
+        // reporthit to domcontroller
+        if (board[x][y].ship.isSunk()) {
+          ships -= 1;
+          // reportsunk to domcontroller
+        }
       } else {
-        // reportmiss
+        // reportmiss to domcontroller
       }
       return true; // valid attack (hit or miss)
     }
     return false; // invalid attack (space already attacked)
   };
-  return { board, placeShip, receiveAttack };
+  const areAllSunk = () => ships <= 0;
+  return {
+    board, ships, placeShip, receiveAttack, areAllSunk,
+  };
+};
+
+const Player = (isAi) => {
+  const makeMove = () => {
+
+  };
+  return { isAi };
 };
 
 const myBoard = Gameboard();
 const myShip = Ship(5);
 myBoard.placeShip(0, 0, 0, 4, myShip);
 console.log(myBoard.board);
-console.log(myBoard.receiveAttack(0, 4));
-console.log(myBoard.board);
+myBoard.receiveAttack(0, 0);
+myBoard.receiveAttack(0, 1);
+myBoard.receiveAttack(0, 2);
+myBoard.receiveAttack(0, 3);
+console.log(myBoard.areAllSunk());
+myBoard.receiveAttack(0, 4);
+console.log(myBoard.areAllSunk());
 
-module.exports = { Ship, Gameboard };
+// module.exports = { Ship, Gameboard };
