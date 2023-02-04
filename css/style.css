@@ -23,7 +23,7 @@ button:hover{
 
 .gameArea{
   background-color: white;
-
+  min-width: 1700px;
   display: grid;
   grid-template-columns: 25% 10% 25%;
   align-content: center;

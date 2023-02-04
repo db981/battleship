@@ -18,9 +18,7 @@ const Gameboard = () => {
   }
   const placeShip = (startX, endX, startY, endY, ship) => {
     for (let x = startX; x <= endX; x++) {
-      console.log('test');
       for (let y = startY; y <= endY; y++) {
-        console.log('test');
         board[x][y].ship = ship;
       }
     }
@@ -31,13 +29,13 @@ const Gameboard = () => {
       board[x][y].attacked = true;
       if (board[x][y].ship) {
         board[x][y].ship.hit();
-        // reporthit to domcontroller
+        displayAttack(x, y, true);
         if (board[x][y].ship.isSunk()) {
           ships -= 1;
           // reportsunk to domcontroller
         }
       } else {
-        // reportmiss to domcontroller
+        displayAttack(x, y, false);
       }
       return true; // valid attack (hit or miss)
     }
@@ -45,18 +43,40 @@ const Gameboard = () => {
   };
   const areAllSunk = () => ships <= 0;
   return {
-    board, ships, placeShip, receiveAttack, areAllSunk,
+    board, placeShip, receiveAttack, areAllSunk,
   };
 };
 
 const Player = () => {
-  const makeMove = () => {
-    console.log('test');
+  const makeMove = (e) => {
+    if (playerTurn) {
+      if (aiGameboard.receiveAttack(e.target.dataset.x, e.target.dataset.y)) {
+        playerTurn = false;
+        ai.makeMove();
+      }
+    }
   };
   return { makeMove };
 };
 
-function createBoards() {
+const AI = () => {
+  const makeMove = () => {
+    const validCoords = [];
+    for (let x = 0; x < 10; x++) {
+      for (let y = 0; y < 10; y++) {
+        if (playerGameboard.board[x][y].attacked === false) {
+          validCoords.push([x, y]);
+        }
+      }
+    }
+    const randomCoords = validCoords[Math.floor(Math.random() * validCoords.length)];
+    playerGameboard.receiveAttack(randomCoords[0], randomCoords[1]);
+    playerTurn = true;
+  };
+  return { makeMove };
+};
+
+function createBoards(player) {
   const playerBoard = document.querySelector('#playerBoard');
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
@@ -74,11 +94,31 @@ function createBoards() {
       cell.classList.add('cell');
       cell.dataset.x = x;
       cell.dataset.y = y;
+      cell.addEventListener('click', player.makeMove);
       aiBoard.appendChild(cell);
     }
   }
 }
 
-window.addEventListener('load', (event) => {
-  createBoards();
-});
+function displayAttack(x, y, isHit) {
+  const board = playerTurn ? document.querySelector('#aiBoard') : document.querySelector('#playerBoard');
+  const cell = board.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
+  cell.style.backgroundColor = isHit ? 'red' : 'gray';
+}
+
+let playerGameboard;
+let aiGameboard;
+let player;
+let ai;
+let playerTurn;
+
+function createGame() {
+  playerGameboard = Gameboard();
+  aiGameboard = Gameboard();
+  player = Player();
+  createBoards(player);
+  ai = AI();
+  playerTurn = true;
+}
+
+createGame();
