@@ -1,0 +1,40 @@
+html, body{
+  margin: 0;
+  height: 100vh;
+}
+
+body{
+  background-color: navy;
+
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: 530px;
+}
+
+.gameArea{
+  background-color: white;
+  min-width: 1800px;
+
+  display: grid;
+  grid-template-columns: 25% 25%;
+  align-content: center;
+  
+  justify-content: space-evenly;
+}
+
+.board{
+  border: 1px solid black;
+  max-width: 450px;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(10, 10%);
+}
+
+.cell{
+  border: 1px solid black;
+}
+
+.cell:hover{
+  cursor: pointer;
+}
