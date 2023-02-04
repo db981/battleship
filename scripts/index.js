@@ -100,6 +100,17 @@ function createBoards(player) {
   }
 }
 
+function displayPlayerShips(playerGameboard) {
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+      if (playerGameboard.board[x][y].ship != null) {
+        const shipCell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
+        shipCell.style.backgroundColor = 'navy';
+      }
+    }
+  }
+}
+
 function displayAttack(x, y, isHit) {
   const board = playerTurn ? document.querySelector('#aiBoard') : document.querySelector('#playerBoard');
   const cell = board.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
@@ -116,9 +127,44 @@ function createGame() {
   playerGameboard = Gameboard();
   aiGameboard = Gameboard();
   player = Player();
+  makeShips();
   createBoards(player);
+  displayPlayerShips(playerGameboard);
+
   ai = AI();
   playerTurn = true;
+}
+
+function makeShips() {
+  const pShip1 = Ship(5);
+  const pShip2 = Ship(4);
+  const pShip3 = Ship(3);
+  const pShip4 = Ship(5);
+  const pShip5 = Ship(4);
+  const pShip6 = Ship(2);
+  const pShip7 = Ship(2);
+  playerGameboard.placeShip(0, 4, 0, 0, pShip1);
+  playerGameboard.placeShip(6, 9, 5, 5, pShip2);
+  playerGameboard.placeShip(3, 3, 2, 4, pShip3);
+  playerGameboard.placeShip(5, 5, 5, 9, pShip4);
+  playerGameboard.placeShip(5, 8, 3, 3, pShip5);
+  playerGameboard.placeShip(0, 0, 8, 9, pShip6);
+  playerGameboard.placeShip(2, 2, 6, 7, pShip7);
+
+  const aiShip1 = Ship(5);
+  const aiShip2 = Ship(4);
+  const aiShip3 = Ship(3);
+  const aiShip4 = Ship(5);
+  const aiShip5 = Ship(4);
+  const aiShip6 = Ship(2);
+  const aiShip7 = Ship(2);
+  aiGameboard.placeShip(0, 4, 0, 0, aiShip1);
+  aiGameboard.placeShip(6, 9, 5, 5, aiShip2);
+  aiGameboard.placeShip(3, 3, 2, 4, aiShip3);
+  aiGameboard.placeShip(5, 5, 5, 9, aiShip4);
+  aiGameboard.placeShip(5, 8, 3, 3, aiShip5);
+  aiGameboard.placeShip(0, 0, 8, 9, aiShip6);
+  aiGameboard.placeShip(2, 2, 6, 7, aiShip7);
 }
 
 createGame();
