@@ -5,26 +5,43 @@ html, body{
 
 body{
   background-color: navy;
-
+  
   display: grid;
-  grid-template-columns: 100vw;
-  grid-template-rows: 530px;
+  justify-content: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 700px;
+}
+
+button{
+  margin: 0;
+  padding: 0;
+}
+
+button:hover{
+  cursor: pointer;
 }
 
 .gameArea{
   background-color: white;
-  min-width: 1800px;
 
   display: grid;
-  grid-template-columns: 25% 25%;
+  grid-template-columns: 25% 10% 25%;
   align-content: center;
   
-  justify-content: space-evenly;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+}
+
+.gameArea > button{
+  font-size: 36px;
+  height: 25%;
+  width: 100%;
+  border-radius: 18px;
 }
 
 .board{
   border: 1px solid black;
-  max-width: 450px;
   aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(10, 10%);

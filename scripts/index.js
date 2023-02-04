@@ -49,23 +49,36 @@ const Gameboard = () => {
   };
 };
 
-const Player = (isAi) => {
+const Player = () => {
   const makeMove = () => {
-
+    console.log('test');
   };
-  return { isAi };
+  return { makeMove };
 };
 
-const myBoard = Gameboard();
-const myShip = Ship(5);
-myBoard.placeShip(0, 0, 0, 4, myShip);
-console.log(myBoard.board);
-myBoard.receiveAttack(0, 0);
-myBoard.receiveAttack(0, 1);
-myBoard.receiveAttack(0, 2);
-myBoard.receiveAttack(0, 3);
-console.log(myBoard.areAllSunk());
-myBoard.receiveAttack(0, 4);
-console.log(myBoard.areAllSunk());
+function createBoards() {
+  const playerBoard = document.querySelector('#playerBoard');
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.dataset.x = x;
+      cell.dataset.y = y;
+      playerBoard.appendChild(cell);
+    }
+  }
+  const aiBoard = document.querySelector('#aiBoard');
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.dataset.x = x;
+      cell.dataset.y = y;
+      aiBoard.appendChild(cell);
+    }
+  }
+}
 
-// module.exports = { Ship, Gameboard };
+window.addEventListener('load', (event) => {
+  createBoards();
+});
